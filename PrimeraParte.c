@@ -41,6 +41,7 @@ void Diccionario(char* szNombre, char szPalabras[][TAMTOKEN], int iEstadisticas[
     }
     fclose(archivo);
 }
+
 void ClonaPalabras(char* szPalabraLeida, char szPalabrasSugeridas[][TAMTOKEN], int& iNumSugeridas) {
     iNumSugeridas = 0;
     int len = strlen(szPalabraLeida);
@@ -85,6 +86,7 @@ void ClonaPalabras(char* szPalabraLeida, char szPalabrasSugeridas[][TAMTOKEN], i
         }
     }
 }
+
 void ListaCandidatas(char szPalabrasSugeridas[][TAMTOKEN], int iNumSugeridas, char szPalabras[][TAMTOKEN],
     int iEstadisticas[], int iNumElementos, char szListaFinal[][TAMTOKEN],
     int iPeso[], int& iNumLista) {
@@ -173,3 +175,20 @@ void ListaCandidatas(char szPalabrasSugeridas[][TAMTOKEN], int iNumSugeridas, ch
         }
     }
     fclose(archivo);
+
+    // Ordenar el diccionario alfabéticamente
+    for (int i = 0; i < iNumElementos - 1; i++) {
+        for (int j = i + 1; j < iNumElementos; j++) {
+            if (strcmp(szPalabras[i], szPalabras[j]) > 0) {
+                char temp[TAMTOKEN];
+                strcpy_s(temp, TAMTOKEN, szPalabras[i]);
+                strcpy_s(szPalabras[i], TAMTOKEN, szPalabras[j]);
+                strcpy_s(szPalabras[j], TAMTOKEN, temp);
+
+                int tempEstadistica = iEstadisticas[i];
+                iEstadisticas[i] = iEstadisticas[j];
+                iEstadisticas[j] = tempEstadistica;
+            }
+        }
+    } 
+}
